@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!--/*/ <th:block th:include="header :: head"></th:block> /*/-->
+
+<title>Error</title>
+</head>
+
+<body>
+	<div class="container">
+		<h1 th:text="#{error.title}">Error</h1>
+
+		<h3 th:if="${status}">
+			<b><span th:text="#{error.status.label}+' '">Response Status: </span></b> 
+			<span th:text="${status}">status-code</span>
+			<span th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+		</h3>
+
+		<h4 th:if="(${message} and ${message.length() != 0})">
+			<b><span th:text="#{error.message.label}+' '">Cause: </span></b>
+			<span th:text="${message}">message ...</span>
+		</h4>
+
+		<h4	th:unless="(${message} and ${message.length() != 0})" th:text="#{error.message.unknown}">
+			Cause unknown (no exception details available)</h4>
+	</div>
+</body>
+
+</html>

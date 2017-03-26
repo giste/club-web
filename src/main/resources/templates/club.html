@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!--/*/ <th:block th:include="header :: head"></th:block> /*/-->
+
+<title>Club</title>
+</head>
+
+<body>
+	<div class="container">
+		<h2 th:text="#{club.title}">Club</h2>
+		<div>
+			<form class="form-horizontal" th:object="${club}">
+				<input type="hidden" th:field="*{id}" />
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('name')} ? has-error">
+					<label class="col-sm-2 control-label" for="name"
+						th:text="#{club.name}">Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="name"
+							th:field="*{name}" value="Club 1" maxlength="64" />
+					</div>
+					<span class="help-block col-sm-offset-2 col-sm-10"
+						th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect
+						name</span>
+				</div>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('acronym')} or ${error} != null ? has-error">
+					<label class="col-sm-2 control-label" for="acronym"
+						th:text="#{club.acronym}">Acronym:</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" id="acronym"
+							th:field="*{acronym}" value="CLUB1" maxlength="5" />
+					</div>
+					<span class="help-block col-sm-offset-2 col-sm-10"
+						th:if="${#fields.hasErrors('acronym')}" th:errors="*{acronym}">Incorrect
+						acronym</span>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label> <input type="checkbox" id="enabled"
+								th:text="#{club.enabled}" th:field="*{enabled}"
+								disabled="disabled">Enabled?</input>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button th:if="*{id} == 0" type="submit" th:formaction="@{/clubs}"
+							formmethod="post" formaction="clubs.html" class="btn btn-primary"
+							th:text="#{club.create}">Create</button>
+						<button th:if="*{id} > 0" type="submit"
+							th:formaction="@{/clubs/*{id}}" formmethod="put"
+							formaction="clubs.html" class="btn btn-primary"
+							th:text="#{club.update}">Update</button>
+						<button th:if="*{id} > 0" type="submit"
+							th:formaction="@{/clubs/*{id}(enabled=*{enabled})}"
+							formmethod="put" formaction="clubs.html" class="btn btn-primary"
+							th:text="*{enabled} ? #{club.disable} : #{club.enable}">Enable</button>
+						<button type="submit" class="btn btn-link" formmethod="get"
+							formaction="clubs.html" th:formaction="@{/clubs}"
+							th:text="#{club.cancel}">Cancel</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

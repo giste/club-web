@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<!--/*/ <th:block th:include="header :: head"></th:block> /*/-->
+		
+		<title>Clubs</title>
+	</head>
+	
+	<body>
+		<div class="container">
+			<h2 th:text="#{clubList.title}">Club List</h2>
+		
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th class="col-sm-9" th:text="#{clubList.name}">Name</th>
+						<th class="col-sm-2" th:text="#{clubList.acronym}">Acronym</th>
+						<th class="col-sm-1" th:text="#{clubList.enabled}">Enabled?</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="club : ${clubList}">
+						<td th:text="${club.name}"><a th:href="@{/clubs/${club.id}}" href="club.html">Club 1</a></td>
+						<td th:text="${club.acronym}">CLUB1</td>
+						<td><input type="checkbox" disabled="disabled" th:checked="${club.enabled}" checked="checked" /></td>
+					</tr>
+					<!--/*-->
+					<tr>
+						<td><a href="club.html">Club 1</a></td>
+						<td>CLUB1</td>
+						<td><input type="checkbox" disabled="disabled" checked="checked" /></td>
+					</tr>
+					<tr>
+						<td><a href="club.html">12345678901234567890123456789012</a></td>
+						<td>CLUB2</td>
+						<td><input type="checkbox" disabled="disabled" /></td>
+					</tr>
+					<!--*/-->
+				</tbody>
+			</table>
+			<form th:action="@{/clubs/new}" action="club.html">
+				<button type="submit" th:text="#{clubList.new}">New Club...</button>
+			</form>
+		</div>
+	</body>
+	
+</html>
