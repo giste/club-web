@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -72,7 +71,7 @@ public class ClubController {
 		return ("club");
 	}
 
-	@PutMapping("/{id}")
+	@PostMapping("/{id}")
 	public String update(@PathVariable("id") long id, @Valid @ModelAttribute("club") final ClubDto club,
 			BindingResult result) {
 		if (result.hasErrors()) {
@@ -88,14 +87,14 @@ public class ClubController {
 		return "redirect:/clubs";
 	}
 
-	@PutMapping("/{id}/disable")
+	@PostMapping("/{id}/disable")
 	public String disable(@PathVariable("id") long id) {
 		clubService.disable(id);
 
 		return "redirect:/clubs";
 	}
 
-	@PutMapping("/{id}/enable")
+	@PostMapping("/{id}/enable")
 	public String enable(@PathVariable("id") long id) {
 		clubService.enable(id);
 

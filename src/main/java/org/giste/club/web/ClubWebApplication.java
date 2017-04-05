@@ -11,10 +11,10 @@ import org.springframework.web.client.RestTemplate;
  * @author Giste
  */
 @SpringBootApplication
-public class ClubWebclientApplication {
+public class ClubWebApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClubWebclientApplication.class, args);
+		SpringApplication.run(ClubWebApplication.class, args);
 	}
 	
 	@Bean
