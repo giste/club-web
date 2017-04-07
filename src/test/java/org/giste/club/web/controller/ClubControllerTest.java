@@ -219,7 +219,7 @@ public class ClubControllerTest {
 
 		when(clubService.update(any(ClubDto.class))).thenReturn(club);
 
-		mvc.perform(put(PATH_CLUBS_ID, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", String.valueOf(club.getId()))
 				.param("name", club.getName())
@@ -244,7 +244,7 @@ public class ClubControllerTest {
 	public void updateIsInvalid() throws Exception {
 		ClubDto club = new ClubDto(1L, "1", "CLB_1", true);
 
-		mvc.perform(put(PATH_CLUBS_ID, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("name", club.getName())
 				.param("acronym", club.getAcronym())
@@ -263,7 +263,7 @@ public class ClubControllerTest {
 
 		when(clubService.update(any(ClubDto.class))).thenThrow(new DuplicatedClubAcronymException(club.getAcronym()));
 
-		mvc.perform(put(PATH_CLUBS_ID, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", String.valueOf(club.getId()))
 				.param("name", club.getName())
@@ -283,7 +283,7 @@ public class ClubControllerTest {
 
 		when(clubService.update(any(ClubDto.class))).thenThrow(new ClubNotFoundException(1));
 
-		mvc.perform(put(PATH_CLUBS_ID, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", String.valueOf(club.getId()))
 				.param("name", club.getName())
@@ -301,7 +301,7 @@ public class ClubControllerTest {
 
 		when(clubService.disable(club.getId())).thenReturn(club);
 
-		mvc.perform(put(PATH_CLUBS_ID_DISABLE, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID_DISABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isFound())
 				.andExpect(view().name("redirect:/clubs"))
@@ -317,7 +317,7 @@ public class ClubControllerTest {
 
 		when(clubService.disable(club.getId())).thenThrow(new ClubNotFoundException(1));
 
-		mvc.perform(put(PATH_CLUBS_ID_DISABLE, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID_DISABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isNotFound());
 
@@ -331,7 +331,7 @@ public class ClubControllerTest {
 
 		when(clubService.enable(club.getId())).thenReturn(club);
 
-		mvc.perform(put(PATH_CLUBS_ID_ENABLE, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID_ENABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isFound())
 				.andExpect(view().name("redirect:/clubs"))
@@ -347,7 +347,7 @@ public class ClubControllerTest {
 
 		when(clubService.enable(club.getId())).thenThrow(new ClubNotFoundException(1));
 
-		mvc.perform(put(PATH_CLUBS_ID_ENABLE, club.getId())
+		mvc.perform(post(PATH_CLUBS_ID_ENABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isNotFound());
 
