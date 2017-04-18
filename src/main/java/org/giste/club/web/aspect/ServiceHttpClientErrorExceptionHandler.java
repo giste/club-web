@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class ServiceHttpClientErrorExceptionHandler {
 
-	private final Logger LOGGER = LoggerFactory.getLogger(ServiceHttpClientErrorExceptionHandler.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Handles HttpClientErrorException exception if HttpStatus is NOT_FOUND. It
@@ -40,20 +40,21 @@ public class ServiceHttpClientErrorExceptionHandler {
 
 			try {
 				error = objectMapper.readValue(hcee.getResponseBodyAsByteArray(), RestErrorDto.class);
+				LOGGER.debug("handleHttpClientErrorNotFound: error={}", error);
 			} catch (Exception e) {
 				// No RestErrorDto inside HttpClientErrorException.
 				// Throw original exception.
-				LOGGER.debug("handleEntityNotFoundException: Throwing HttpClientErrorException");
+				LOGGER.debug("handleHttpClientErrorNotFound: Throwing HttpClientErrorException");
 				throw hcee;
 			}
 
 			// Throw EntityNotFoundException with message from RestErrorDto.
-			LOGGER.debug("handleEntityNotFoundException: Throwing EntityNotFoundException");
+			LOGGER.debug("handleHttpClientErrorNotFound: Throwing EntityNotFoundException");
 			throw new EntityNotFoundException(error.getMessage());
 		}
 
 		// HttpStatus different from NOT_FOUND. Throw original exception.
-		LOGGER.debug("handleEntityNotFoundException: Throwing HttpClientErrorException");
+		LOGGER.debug("handleHttpClientErrorNotFound: Throwing HttpClientErrorException");
 		throw hcee;
 	}
 }

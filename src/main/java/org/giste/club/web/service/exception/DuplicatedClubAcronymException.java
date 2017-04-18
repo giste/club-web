@@ -1,8 +1,8 @@
 package org.giste.club.web.service.exception;
 
 /**
- * Exception thrown when a club is tried to be created with an acronym that it's
- * in use by another club.
+ * Exception thrown when a club is tried to be created or updated with an
+ * acronym that it's in use by another club.
  * 
  * @author Giste
  */

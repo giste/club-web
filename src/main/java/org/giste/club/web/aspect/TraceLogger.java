@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class TraceLogger {
-	private static final Logger LOGGER = LoggerFactory.getLogger(TraceLogger.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	@Before("execution(* org.giste.club.web..*.*(..))")
 	public void logBefore(JoinPoint joinPoint) {

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class ClubServiceHttpClientErrorExceptionHandler {
 
-	private final Logger LOGGER = LoggerFactory.getLogger(ClubServiceHttpClientErrorExceptionHandler.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Handles HttpClientErrorException exception if HttpStatus is CONFLICT and
@@ -33,7 +33,7 @@ public class ClubServiceHttpClientErrorExceptionHandler {
 	 * @throws DuplicatedClubAcronymException The exception to be thrown.
 	 */
 	@AfterThrowing(pointcut = "within(org.giste.club.web.service.ClubService+)", throwing = "hcee")
-	public void handleDuplicatedClubAcronymException(HttpClientErrorException hcee)
+	public void handleHttpClientErrorConflict(HttpClientErrorException hcee)
 			throws DuplicatedClubAcronymException {
 
 		if (hcee.getStatusCode().equals(HttpStatus.CONFLICT)) {
@@ -43,28 +43,22 @@ public class ClubServiceHttpClientErrorExceptionHandler {
 			try {
 				error = objectMapper.readValue(hcee.getResponseBodyAsByteArray(),
 						RestErrorDto.class);
+				LOGGER.debug("handleHttpClientErrorConflict: error={}", error);
 			} catch (Exception e) {
 				// No RestErrorDto inside HttpClientErrorException.
 				// Throw original exception.
-				LOGGER.debug("handleDuplicatedClubAcronymException: Throwing Exception");
+				LOGGER.debug("handleHttpClientErrorConflict: Throwing Exception");
 				throw hcee;
 			}
 
 			// Throw DuplicatedClubAcronymException with message from
 			// RestErrorDto.
-			Object[] params = { error.getStatus() + "-" +
-					error.getStatus().getReasonPhrase(), error.getCode(),
-					error.getMessage() };
-
-			LOGGER.debug(
-					"handleDuplicatedClubAcronymException: HttpClientErrorException - Status: {}, Code: {}, Message: {}",
-					params);
-			LOGGER.debug("handleDuplicatedClubAcronymException: Throwing DuplicatedClubAcronymException");
+			LOGGER.debug("handleHttpClientErrorConflict: Throwing DuplicatedClubAcronymException");
 			throw new DuplicatedClubAcronymException(error.getMessage());
 		}
 
 		// HttpStatus different from CONFLICT. Throw original exception.
-		LOGGER.debug("handleDuplicatedClubAcronymException: Throwing HttpClientErrorException");
+		LOGGER.debug("handleHttpClientErrorConflict: Throwing HttpClientErrorException");
 		throw hcee;
 	}
 
