@@ -25,6 +25,7 @@ import org.giste.club.common.dto.ClubDto;
 import org.giste.club.web.service.ClubService;
 import org.giste.club.web.service.exception.ClubNotFoundException;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
+import org.giste.club.web.service.exception.EntityNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -112,7 +113,7 @@ public class ClubControllerTest {
 
 	@Test
 	public void findByIdClubNotFound() throws Exception {
-		when(clubService.findById(anyLong())).thenThrow(new ClubNotFoundException(1));
+		when(clubService.findById(anyLong())).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(get(PATH_CLUBS_ID, 1L))
 				.andExpect(status().isNotFound());
@@ -188,7 +189,7 @@ public class ClubControllerTest {
 	public void createClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(0L, "Club 1", "CLUB1", true);
 
-		when(clubService.create(any(ClubDto.class))).thenThrow(new ClubNotFoundException(1));
+		when(clubService.create(any(ClubDto.class))).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -279,7 +280,7 @@ public class ClubControllerTest {
 	public void updateClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.update(any(ClubDto.class))).thenThrow(new ClubNotFoundException(1));
+		when(clubService.update(any(ClubDto.class))).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -313,7 +314,7 @@ public class ClubControllerTest {
 	public void disableClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.disable(club.getId())).thenThrow(new ClubNotFoundException(1));
+		when(clubService.disable(club.getId())).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS_ID_DISABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
@@ -343,7 +344,7 @@ public class ClubControllerTest {
 	public void enableClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.enable(club.getId())).thenThrow(new ClubNotFoundException(1));
+		when(clubService.enable(club.getId())).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS_ID_ENABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))

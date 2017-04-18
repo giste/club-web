@@ -143,7 +143,7 @@ public class ClubServiceTest {
 
 	@Test
 	public void testFindByIdClubNotFound() throws Exception {
-		RestErrorDto error = new RestErrorDto(HttpStatus.NOT_FOUND, "0", "Message", "Developer info");
+		RestErrorDto error = new RestErrorDto(HttpStatus.NOT_FOUND, "10001001", "Message", "Developer info");
 
 		final UriComponents uri = uriBuilder.path(PATH_CLUBS_ID).buildAndExpand(1);
 

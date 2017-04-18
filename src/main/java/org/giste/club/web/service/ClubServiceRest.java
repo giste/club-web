@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.giste.club.common.dto.ClubDto;
 import org.giste.club.web.config.RestProperties;
-import org.giste.club.web.service.exception.ClubNotFoundException;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,7 +24,7 @@ public class ClubServiceRest implements ClubService {
 
 	private RestTemplate restTemplate;
 	private RestProperties restProperties;
-	
+
 	public ClubServiceRest(RestTemplate restTemplate, RestProperties restProperties) {
 		this.restTemplate = restTemplate;
 		this.restProperties = restProperties;
@@ -34,29 +33,29 @@ public class ClubServiceRest implements ClubService {
 	@Override
 	public List<ClubDto> findAll() {
 		UriComponents uri = constructUriBuilder().path("/clubs").build();
-		
+
 		return Arrays.stream(restTemplate.getForObject(uri.toUriString(), ClubDto[].class))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public ClubDto findById(long id) throws ClubNotFoundException {
+	public ClubDto findById(long id) {
 		UriComponents uri = constructUriBuilder().path("/clubs/{id}").build();
-		
+
 		return restTemplate.getForObject(uri.toUriString(), ClubDto.class, id);
 	}
 
 	@Override
 	public ClubDto create(ClubDto club) throws DuplicatedClubAcronymException {
 		UriComponents uri = constructUriBuilder().path("/clubs").build();
-		
+
 		return restTemplate.postForObject(uri.toUriString(), club, ClubDto.class);
 	}
 
 	@Override
 	public ClubDto update(ClubDto club) throws DuplicatedClubAcronymException {
 		UriComponents uri = constructUriBuilder().path("/clubs/{id}").build();
-		
+
 		return restTemplate.exchange(uri.toUriString(), HttpMethod.PUT, new HttpEntity<>(club),
 				ClubDto.class, club.getId()).getBody();
 	}
@@ -64,7 +63,7 @@ public class ClubServiceRest implements ClubService {
 	@Override
 	public ClubDto disable(long id) {
 		UriComponents uri = constructUriBuilder().path("/clubs/{id}/disable").build();
-		
+
 		return restTemplate.exchange(uri.toUriString(), HttpMethod.PUT, null,
 				ClubDto.class, id).getBody();
 	}
@@ -72,7 +71,7 @@ public class ClubServiceRest implements ClubService {
 	@Override
 	public ClubDto enable(long id) {
 		UriComponents uri = constructUriBuilder().path("/clubs/{id}/enable").build();
-		
+
 		return restTemplate.exchange(uri.toUriString(), HttpMethod.PUT, null,
 				ClubDto.class, id).getBody();
 	}
