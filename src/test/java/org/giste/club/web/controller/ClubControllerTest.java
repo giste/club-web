@@ -23,7 +23,6 @@ import java.util.Arrays;
 
 import org.giste.club.common.dto.ClubDto;
 import org.giste.club.web.service.ClubService;
-import org.giste.club.web.service.exception.ClubNotFoundException;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
 import org.giste.club.web.service.exception.EntityNotFoundException;
 import org.junit.Test;
