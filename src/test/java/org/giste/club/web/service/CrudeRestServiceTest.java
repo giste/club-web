@@ -15,6 +15,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import java.util.List;
 
 import org.giste.club.web.config.RestProperties;
+import org.giste.club.web.service.exception.EntityNotFoundException;
 import org.giste.spring.util.error.dto.FieldErrorDto;
 import org.giste.spring.util.error.dto.RestErrorDto;
 import org.giste.util.dto.NonRemovableDto;
@@ -407,15 +408,9 @@ public abstract class CrudeRestServiceTest<DTO extends NonRemovableDto> {
 
 		try {
 			service.findById(1);
-			fail("HttpClientErrorException expected.");
-		} catch (HttpClientErrorException e) {
-			assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
-
-			RestErrorDto readError = objectMapper.readValue(e.getResponseBodyAsByteArray(), RestErrorDto.class);
-			assertThat(readError.getStatus(), is(error.getStatus()));
-			assertThat(readError.getCode(), is(error.getCode()));
-			assertThat(readError.getMessage(), is(error.getMessage()));
-			assertThat(readError.getDeveloperInfo(), is(error.getDeveloperInfo()));
+			fail("EntityNotFoundException expected.");
+		} catch (EntityNotFoundException e) {
+			assertThat(e.getMessage(), is(error.getMessage()));
 		}
 
 		mockServer.verify();
@@ -504,15 +499,9 @@ public abstract class CrudeRestServiceTest<DTO extends NonRemovableDto> {
 
 		try {
 			service.update(dto);
-			fail("HttpClientErrorException expected.");
-		} catch (HttpClientErrorException e) {
-			assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
-
-			RestErrorDto readError = objectMapper.readValue(e.getResponseBodyAsByteArray(), RestErrorDto.class);
-			assertThat(readError.getStatus(), is(error.getStatus()));
-			assertThat(readError.getCode(), is(error.getCode()));
-			assertThat(readError.getMessage(), is(error.getMessage()));
-			assertThat(readError.getDeveloperInfo(), is(error.getDeveloperInfo()));
+			fail("EntityNotFoundException expected.");
+		} catch (EntityNotFoundException e) {
+			assertThat(e.getMessage(), is(error.getMessage()));
 		}
 
 		mockServer.verify();
@@ -571,15 +560,9 @@ public abstract class CrudeRestServiceTest<DTO extends NonRemovableDto> {
 
 		try {
 			service.enable(id);
-			fail("HttpClientErrorException expected.");
-		} catch (HttpClientErrorException e) {
-			assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
-
-			RestErrorDto readError = objectMapper.readValue(e.getResponseBodyAsByteArray(), RestErrorDto.class);
-			assertThat(readError.getStatus(), is(error.getStatus()));
-			assertThat(readError.getCode(), is(error.getCode()));
-			assertThat(readError.getMessage(), is(error.getMessage()));
-			assertThat(readError.getDeveloperInfo(), is(error.getDeveloperInfo()));
+			fail("EntityNotFoundException expected.");
+		} catch (EntityNotFoundException e) {
+			assertThat(e.getMessage(), is(error.getMessage()));
 		}
 
 		mockServer.verify();
@@ -638,15 +621,9 @@ public abstract class CrudeRestServiceTest<DTO extends NonRemovableDto> {
 
 		try {
 			service.disable(id);
-			fail("HttpClientErrorException expected.");
-		} catch (HttpClientErrorException e) {
-			assertThat(e.getStatusCode(), is(HttpStatus.NOT_FOUND));
-
-			RestErrorDto readError = objectMapper.readValue(e.getResponseBodyAsByteArray(), RestErrorDto.class);
-			assertThat(readError.getStatus(), is(error.getStatus()));
-			assertThat(readError.getCode(), is(error.getCode()));
-			assertThat(readError.getMessage(), is(error.getMessage()));
-			assertThat(readError.getDeveloperInfo(), is(error.getDeveloperInfo()));
+			fail("EntityNotFoundException expected.");
+		} catch (EntityNotFoundException e) {
+			assertThat(e.getMessage(), is(error.getMessage()));
 		}
 
 		mockServer.verify();

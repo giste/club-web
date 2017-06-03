@@ -9,13 +9,13 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import org.giste.club.common.dto.ClubDto;
 import org.giste.club.web.config.RestProperties;
+import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
 import org.giste.spring.util.error.dto.FieldErrorDto;
 import org.giste.spring.util.error.dto.RestErrorDto;
 import org.junit.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 
@@ -41,14 +41,9 @@ public class ClubRestServiceTest extends CrudeRestServiceTest<ClubDto> {
 
 		try {
 			getService().create(club1);
-			fail("Expected HttpClientErrorException");
-		} catch (HttpClientErrorException e) {
-			assertThat(e.getStatusCode(), is(HttpStatus.CONFLICT));
-			RestErrorDto readError = getObjectMapper().readValue(e.getResponseBodyAsByteArray(), RestErrorDto.class);
-			assertThat(readError.getStatus(), is(error.getStatus()));
-			assertThat(readError.getCode(), is(error.getCode()));
-			assertThat(readError.getMessage(), is(error.getMessage()));
-			assertThat(readError.getDeveloperInfo(), is(error.getDeveloperInfo()));
+			fail("Expected DuplicatedClubAcronymException");
+		} catch (DuplicatedClubAcronymException e) {
+			assertThat(e.getMessage(), is(error.getMessage()));
 		}
 
 		getMockServer().verify();
@@ -69,14 +64,9 @@ public class ClubRestServiceTest extends CrudeRestServiceTest<ClubDto> {
 
 		try {
 			getService().update(club1);
-			fail("Expected HttpClientErrorException");
-		} catch (HttpClientErrorException e) {
-			assertThat(e.getStatusCode(), is(HttpStatus.CONFLICT));
-			RestErrorDto readError = getObjectMapper().readValue(e.getResponseBodyAsByteArray(), RestErrorDto.class);
-			assertThat(readError.getStatus(), is(error.getStatus()));
-			assertThat(readError.getCode(), is(error.getCode()));
-			assertThat(readError.getMessage(), is(error.getMessage()));
-			assertThat(readError.getDeveloperInfo(), is(error.getDeveloperInfo()));
+			fail("Expected DuplicatedClubAcronymException");
+		} catch (DuplicatedClubAcronymException e) {
+			assertThat(e.getMessage(), is(error.getMessage()));
 		}
 
 		getMockServer().verify();

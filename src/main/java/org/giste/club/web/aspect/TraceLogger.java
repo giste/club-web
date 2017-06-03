@@ -38,7 +38,7 @@ public class TraceLogger {
 		}
 	}
 
-	@AfterReturning(pointcut = "execution(!void org.giste.club.web..*.*(..))", returning = "ret")
+	@AfterReturning(pointcut = "execution(!void org.giste.club.web..*.*(..))", returning = "returnValue")
 	public void logReturn(JoinPoint joinPoint, Object returnValue) {
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("EXIT " + joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName()
