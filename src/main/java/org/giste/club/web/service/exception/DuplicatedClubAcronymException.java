@@ -6,7 +6,7 @@ package org.giste.club.web.service.exception;
  * 
  * @author Giste
  */
-public class DuplicatedClubAcronymException extends Exception {
+public class DuplicatedClubAcronymException extends RuntimeException {
 
 	private static final long serialVersionUID = 2894647064409676921L;
 

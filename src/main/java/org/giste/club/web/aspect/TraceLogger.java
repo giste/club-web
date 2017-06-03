@@ -18,31 +18,31 @@ public class TraceLogger {
 	public void logBefore(JoinPoint joinPoint) {
 
 		if (LOGGER.isTraceEnabled()) {
-			StringBuffer str = new StringBuffer();
+			StringBuffer message = new StringBuffer();
 			Object[] args;
 			int i;
 
 			// Get method arguments and construct log info.
 			args = joinPoint.getArgs();
-			str.append("ENTER ").append(joinPoint.getTarget().getClass().getName());
-			str.append(".").append(joinPoint.getSignature().getName()).append("(");
+			message.append("ENTER ").append(joinPoint.getTarget().getClass().getName());
+			message.append(".").append(joinPoint.getSignature().getName()).append("(");
 			for (i = 0; i < args.length; i++) {
 				if (i > 0) {
-					str.append(", ");
+					message.append(", ");
 				}
-				str.append(args[i]);
+				message.append(args[i]);
 			}
-			str.append(")");
+			message.append(")");
 
-			LOGGER.trace(str.toString());
+			LOGGER.trace(message.toString());
 		}
 	}
 
 	@AfterReturning(pointcut = "execution(!void org.giste.club.web..*.*(..))", returning = "ret")
-	public void logReturn(JoinPoint joinPoint, Object ret) {
+	public void logReturn(JoinPoint joinPoint, Object returnValue) {
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("EXIT " + joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName()
-					+ " = " + ret);
+					+ " = " + returnValue);
 		}
 	}
 

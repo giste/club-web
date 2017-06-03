@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 
 import org.giste.club.common.dto.ClubDto;
-import org.giste.club.web.service.ClubService;
+import org.giste.club.web.service.ClubRestService;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
 import org.giste.club.web.service.exception.EntityNotFoundException;
 import org.junit.Test;
@@ -49,14 +49,14 @@ public class ClubControllerTest {
 	private MockMvc mvc;
 
 	@MockBean
-	private ClubService clubService;
+	private ClubRestService clubRestService;
 
 	@Test
 	public void findAllIsValid() throws Exception {
 		ClubDto club1 = new ClubDto(1L, "Club 1", "CLUB1", false);
 		ClubDto club2 = new ClubDto(2L, "Club 2", "CLUB2", false);
 
-		when(clubService.findAll()).thenReturn(Arrays.asList(club1, club2));
+		when(clubRestService.findAll()).thenReturn(Arrays.asList(club1, club2));
 
 		mvc.perform(get(PATH_CLUBS))
 				.andExpect(status().isOk())
@@ -75,28 +75,28 @@ public class ClubControllerTest {
 								hasProperty("acronym", is(club2.getAcronym())),
 								hasProperty("enabled", is(club2.isEnabled()))))));
 
-		verify(clubService).findAll();
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).findAll();
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void findAllIsEmpty() throws Exception {
-		when(clubService.findAll()).thenReturn(Arrays.asList());
+		when(clubRestService.findAll()).thenReturn(Arrays.asList());
 
 		mvc.perform(get(PATH_CLUBS))
 				.andExpect(status().isOk())
 				.andExpect(view().name("clubs"))
 				.andExpect(model().attribute("clubList", hasSize(0)));
 
-		verify(clubService).findAll();
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).findAll();
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void findByIdIsValid() throws Exception {
 		ClubDto club1 = new ClubDto(1L, "Club 1", "CLUB1", false);
 
-		when(clubService.findById(club1.getId())).thenReturn(club1);
+		when(clubRestService.findById(club1.getId())).thenReturn(club1);
 
 		mvc.perform(get(PATH_CLUBS_ID, 1L))
 				.andExpect(status().isOk())
@@ -106,26 +106,26 @@ public class ClubControllerTest {
 				.andExpect(model().attribute("club", hasProperty("acronym", is(club1.getAcronym()))))
 				.andExpect(model().attribute("club", hasProperty("enabled", is(club1.isEnabled()))));
 
-		verify(clubService).findById(club1.getId());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).findById(club1.getId());
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void findByIdClubNotFound() throws Exception {
-		when(clubService.findById(anyLong())).thenThrow(new EntityNotFoundException("message"));
+		when(clubRestService.findById(anyLong())).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(get(PATH_CLUBS_ID, 1L))
 				.andExpect(status().isNotFound());
 
-		verify(clubService).findById(1L);
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).findById(1L);
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void createIsValid() throws Exception {
 		ClubDto club = new ClubDto(0L, "Club 1", "CLUB1", true);
 
-		when(clubService.create(any(ClubDto.class))).thenReturn(club);
+		when(clubRestService.create(any(ClubDto.class))).thenReturn(club);
 
 		mvc.perform(post(PATH_CLUBS)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -137,8 +137,8 @@ public class ClubControllerTest {
 				.andExpect(redirectedUrl("/clubs"));
 
 		ArgumentCaptor<ClubDto> dtoCaptor = ArgumentCaptor.forClass(ClubDto.class);
-		verify(clubService).create(dtoCaptor.capture());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).create(dtoCaptor.capture());
+		verifyNoMoreInteractions(clubRestService);
 
 		ClubDto capturedClub = dtoCaptor.getValue();
 		assertThat(capturedClub.getId(), is(club.getId()));
@@ -161,14 +161,14 @@ public class ClubControllerTest {
 				.andExpect(model().attributeHasFieldErrors("club", "name"))
 				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
 
-		verifyZeroInteractions(clubService);
+		verifyZeroInteractions(clubRestService);
 	}
 
 	@Test
 	public void createDuplicatedAcronym() throws Exception {
 		ClubDto club = new ClubDto(0L, "Club 1", "CLUB1", true);
 
-		when(clubService.create(any(ClubDto.class))).thenThrow(new DuplicatedClubAcronymException(club.getAcronym()));
+		when(clubRestService.create(any(ClubDto.class))).thenThrow(new DuplicatedClubAcronymException(club.getAcronym()));
 
 		mvc.perform(post(PATH_CLUBS)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -180,15 +180,15 @@ public class ClubControllerTest {
 				.andExpect(view().name(is("club")))
 				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
 
-		verify(clubService).create(any(ClubDto.class));
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).create(any(ClubDto.class));
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void createClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(0L, "Club 1", "CLUB1", true);
 
-		when(clubService.create(any(ClubDto.class))).thenThrow(new EntityNotFoundException("message"));
+		when(clubRestService.create(any(ClubDto.class))).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -198,8 +198,8 @@ public class ClubControllerTest {
 				.param("enabled", String.valueOf((club.isEnabled()))))
 				.andExpect(status().isNotFound());
 
-		verify(clubService).create(any(ClubDto.class));
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).create(any(ClubDto.class));
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
@@ -208,14 +208,14 @@ public class ClubControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(view().name(is("club")));
 
-		verifyZeroInteractions(clubService);
+		verifyZeroInteractions(clubRestService);
 	}
 
 	@Test
 	public void updateIsValid() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.update(any(ClubDto.class))).thenReturn(club);
+		when(clubRestService.update(any(ClubDto.class))).thenReturn(club);
 
 		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -228,8 +228,8 @@ public class ClubControllerTest {
 				.andExpect(redirectedUrl("/clubs"));
 
 		ArgumentCaptor<ClubDto> dtoCaptor = ArgumentCaptor.forClass(ClubDto.class);
-		verify(clubService).update(dtoCaptor.capture());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).update(dtoCaptor.capture());
+		verifyNoMoreInteractions(clubRestService);
 
 		ClubDto capturedClub = dtoCaptor.getValue();
 		assertThat(capturedClub.getId(), is(club.getId()));
@@ -252,14 +252,14 @@ public class ClubControllerTest {
 				.andExpect(model().attributeHasFieldErrors("club", "name"))
 				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
 
-		verifyZeroInteractions(clubService);
+		verifyZeroInteractions(clubRestService);
 	}
 
 	@Test
 	public void updateDuplicatedAcronym() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.update(any(ClubDto.class))).thenThrow(new DuplicatedClubAcronymException(club.getAcronym()));
+		when(clubRestService.update(any(ClubDto.class))).thenThrow(new DuplicatedClubAcronymException(club.getAcronym()));
 
 		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -271,15 +271,15 @@ public class ClubControllerTest {
 				.andExpect(view().name(is("club")))
 				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
 
-		verify(clubService).update(any(ClubDto.class));
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).update(any(ClubDto.class));
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void updateClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.update(any(ClubDto.class))).thenThrow(new EntityNotFoundException("message"));
+		when(clubRestService.update(any(ClubDto.class))).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS_ID, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -289,15 +289,15 @@ public class ClubControllerTest {
 				.param("enabled", String.valueOf((club.isEnabled()))))
 				.andExpect(status().isNotFound());
 
-		verify(clubService).update(any(ClubDto.class));
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).update(any(ClubDto.class));
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void disableIsValid() throws Exception {
 		final ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", false);
 
-		when(clubService.disable(club.getId())).thenReturn(club);
+		when(clubRestService.disable(club.getId())).thenReturn(club);
 
 		mvc.perform(post(PATH_CLUBS_ID_DISABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
@@ -305,29 +305,29 @@ public class ClubControllerTest {
 				.andExpect(view().name("redirect:/clubs"))
 				.andExpect(redirectedUrl("/clubs"));
 
-		verify(clubService).disable(club.getId());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).disable(club.getId());
+		verifyNoMoreInteractions(clubRestService);
 	}
 
 	@Test
 	public void disableClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.disable(club.getId())).thenThrow(new EntityNotFoundException("message"));
+		when(clubRestService.disable(club.getId())).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS_ID_DISABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isNotFound());
 
-		verify(clubService).disable(club.getId());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).disable(club.getId());
+		verifyNoMoreInteractions(clubRestService);
 	}
 	
 	@Test
 	public void enableIsValid() throws Exception {
 		final ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.enable(club.getId())).thenReturn(club);
+		when(clubRestService.enable(club.getId())).thenReturn(club);
 
 		mvc.perform(post(PATH_CLUBS_ID_ENABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
@@ -335,21 +335,21 @@ public class ClubControllerTest {
 				.andExpect(view().name("redirect:/clubs"))
 				.andExpect(redirectedUrl("/clubs"));
 
-		verify(clubService).enable(club.getId());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).enable(club.getId());
+		verifyNoMoreInteractions(clubRestService);
 	}
 	
 	@Test
 	public void enableClubNotFound() throws Exception {
 		ClubDto club = new ClubDto(1L, "Club 1", "CLUB1", true);
 
-		when(clubService.enable(club.getId())).thenThrow(new EntityNotFoundException("message"));
+		when(clubRestService.enable(club.getId())).thenThrow(new EntityNotFoundException("message"));
 
 		mvc.perform(post(PATH_CLUBS_ID_ENABLE, club.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 				.andExpect(status().isNotFound());
 
-		verify(clubService).enable(club.getId());
-		verifyNoMoreInteractions(clubService);
+		verify(clubRestService).enable(club.getId());
+		verifyNoMoreInteractions(clubRestService);
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.giste.club.common.dto.ClubDto;
-import org.giste.club.web.service.ClubService;
+import org.giste.club.web.service.ClubRestService;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,16 +25,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/clubs")
 public class ClubController {
 
-	private ClubService clubService;
+	private ClubRestService clubRestService;
 
-	public ClubController(ClubService clubService) {
-		this.clubService = clubService;
+	public ClubController(ClubRestService clubRestService) {
+		this.clubRestService = clubRestService;
 	}
 
 	@GetMapping
 	public String findAll(Model model) {
 
-		List<ClubDto> clubList = clubService.findAll();
+		List<ClubDto> clubList = clubRestService.findAll();
 		model.addAttribute("clubList", clubList);
 
 		return "clubs";
@@ -42,7 +42,7 @@ public class ClubController {
 
 	@GetMapping("/{id}")
 	public String findById(@PathVariable("id") long id, Model model) {
-		ClubDto club = clubService.findById(id);
+		ClubDto club = clubRestService.findById(id);
 		model.addAttribute("club", club);
 
 		return "club";
@@ -55,7 +55,7 @@ public class ClubController {
 		}
 
 		try {
-			clubService.create(club);
+			clubRestService.create(club);
 		} catch (DuplicatedClubAcronymException e) {
 			return treatDuplicatedAcronym(club, result);
 		}
@@ -79,7 +79,7 @@ public class ClubController {
 		}
 
 		try {
-			clubService.update(club);
+			clubRestService.update(club);
 		} catch (DuplicatedClubAcronymException e) {
 			return treatDuplicatedAcronym(club, result);
 		}
@@ -89,14 +89,14 @@ public class ClubController {
 
 	@PostMapping("/{id}/disable")
 	public String disable(@PathVariable("id") long id) {
-		clubService.disable(id);
+		clubRestService.disable(id);
 
 		return "redirect:/clubs";
 	}
 
 	@PostMapping("/{id}/enable")
 	public String enable(@PathVariable("id") long id) {
-		clubService.enable(id);
+		clubRestService.enable(id);
 
 		return "redirect:/clubs";
 	}
