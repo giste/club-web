@@ -22,12 +22,12 @@
 			</thead>
 
 			<tbody>
-				<tr th:each="club : ${clubList}">
-					<td><a href="club.html" th:text="${club.name}"
-						th:href="@{clubs/{clubId}(clubId=${club.id})}">Club 1</a></td>
-					<td th:text="${club.acronym}">CLUB1</td>
+				<tr th:each="entity : ${entityList}">
+					<td><a href="club.html" th:text="${entity.name}"
+						th:href="@{clubs/{clubId}(clubId=${entity.id})}">Club 1</a></td>
+					<td th:text="${entity.acronym}">CLUB1</td>
 					<td><input type="checkbox" disabled="disabled"
-						th:checked="${club.enabled}" checked="checked" /></td>
+						th:checked="${entity.enabled}" checked="checked" /></td>
 				</tr>
 				<!--/*-->
 				<tr>

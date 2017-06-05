@@ -60,15 +60,15 @@ public class ClubControllerTest {
 
 		mvc.perform(get(PATH_CLUBS))
 				.andExpect(status().isOk())
-				.andExpect(view().name("clubs"))
-				.andExpect(model().attribute("clubList", hasSize(2)))
-				.andExpect(model().attribute("clubList", hasItem(
+				.andExpect(view().name("clubList"))
+				.andExpect(model().attribute("entityList", hasSize(2)))
+				.andExpect(model().attribute("entityList", hasItem(
 						allOf(
 								hasProperty("id", is(club1.getId())),
 								hasProperty("name", is(club1.getName())),
 								hasProperty("acronym", is(club1.getAcronym())),
 								hasProperty("enabled", is(club1.isEnabled()))))))
-				.andExpect(model().attribute("clubList", hasItem(
+				.andExpect(model().attribute("entityList", hasItem(
 						allOf(
 								hasProperty("id", is(club2.getId())),
 								hasProperty("name", is(club2.getName())),
@@ -85,8 +85,8 @@ public class ClubControllerTest {
 
 		mvc.perform(get(PATH_CLUBS))
 				.andExpect(status().isOk())
-				.andExpect(view().name("clubs"))
-				.andExpect(model().attribute("clubList", hasSize(0)));
+				.andExpect(view().name("clubList"))
+				.andExpect(model().attribute("entityList", hasSize(0)));
 
 		verify(clubRestService).findAll();
 		verifyNoMoreInteractions(clubRestService);
@@ -101,10 +101,10 @@ public class ClubControllerTest {
 		mvc.perform(get(PATH_CLUBS_ID, 1L))
 				.andExpect(status().isOk())
 				.andExpect(view().name("club"))
-				.andExpect(model().attribute("club", hasProperty("id", is(club1.getId()))))
-				.andExpect(model().attribute("club", hasProperty("name", is(club1.getName()))))
-				.andExpect(model().attribute("club", hasProperty("acronym", is(club1.getAcronym()))))
-				.andExpect(model().attribute("club", hasProperty("enabled", is(club1.isEnabled()))));
+				.andExpect(model().attribute("entity", hasProperty("id", is(club1.getId()))))
+				.andExpect(model().attribute("entity", hasProperty("name", is(club1.getName()))))
+				.andExpect(model().attribute("entity", hasProperty("acronym", is(club1.getAcronym()))))
+				.andExpect(model().attribute("entity", hasProperty("enabled", is(club1.isEnabled()))));
 
 		verify(clubRestService).findById(club1.getId());
 		verifyNoMoreInteractions(clubRestService);
@@ -158,8 +158,8 @@ public class ClubControllerTest {
 				.param("enabled", String.valueOf((club.isEnabled()))))
 				.andExpect(status().isOk())
 				.andExpect(view().name(is("club")))
-				.andExpect(model().attributeHasFieldErrors("club", "name"))
-				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
+				.andExpect(model().attributeHasFieldErrors("entity", "name"))
+				.andExpect(model().attributeHasFieldErrors("entity", "acronym"));
 
 		verifyZeroInteractions(clubRestService);
 	}
@@ -178,7 +178,7 @@ public class ClubControllerTest {
 				.param("enabled", String.valueOf((club.isEnabled()))))
 				.andExpect(status().isOk())
 				.andExpect(view().name(is("club")))
-				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
+				.andExpect(model().attributeHasFieldErrors("entity", "acronym"));
 
 		verify(clubRestService).create(any(ClubDto.class));
 		verifyNoMoreInteractions(clubRestService);
@@ -249,8 +249,8 @@ public class ClubControllerTest {
 				.param("enabled", String.valueOf((club.isEnabled()))))
 				.andExpect(status().isOk())
 				.andExpect(view().name(is("club")))
-				.andExpect(model().attributeHasFieldErrors("club", "name"))
-				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
+				.andExpect(model().attributeHasFieldErrors("entity", "name"))
+				.andExpect(model().attributeHasFieldErrors("entity", "acronym"));
 
 		verifyZeroInteractions(clubRestService);
 	}
@@ -269,7 +269,7 @@ public class ClubControllerTest {
 				.param("enabled", String.valueOf((club.isEnabled()))))
 				.andExpect(status().isOk())
 				.andExpect(view().name(is("club")))
-				.andExpect(model().attributeHasFieldErrors("club", "acronym"));
+				.andExpect(model().attributeHasFieldErrors("entity", "acronym"));
 
 		verify(clubRestService).update(any(ClubDto.class));
 		verifyNoMoreInteractions(clubRestService);

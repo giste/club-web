@@ -12,7 +12,7 @@
 	<div class="container">
 		<h2 th:text="#{club.title}">Club</h2>
 		<div>
-			<form class="form-horizontal" th:object="${club}">
+			<form class="form-horizontal" th:object="${entity}">
 				<input type="hidden" th:field="*{id}" />
 				<div class="form-group"
 					th:classappend="${#fields.hasErrors('name')} ? has-error">
@@ -52,18 +52,18 @@
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button th:if="*{id} == 0" type="submit" th:formaction="@{/clubs}"
-							formmethod="post" formaction="clubs.html" class="btn btn-primary"
+							formmethod="post" formaction="clubList.html" class="btn btn-primary"
 							th:text="#{club.create}">Create</button>
 						<button th:if="*{id} > 0" type="submit"
 							th:formaction="@{/clubs/{clubId}(clubId=*{id})}" formmethod="post"
-							formaction="clubs.html" class="btn btn-primary"
+							formaction="clubList.html" class="btn btn-primary"
 							th:text="#{club.update}">Update</button>
 						<button th:if="*{id} > 0" type="submit"
 							th:formaction="@{/clubs/{id}/{action}(id=*{id}, action=*{enabled} ? disable : enable)}"
-							formmethod="post" formaction="clubs.html" class="btn btn-primary"
+							formmethod="post" formaction="clubList.html" class="btn btn-primary"
 							th:text="*{enabled} ? #{club.disable} : #{club.enable}">Enable</button>
 						<button type="submit" class="btn btn-link" formmethod="get"
-							formaction="clubs.html" th:formaction="@{/clubs}"
+							formaction="clubList.html" th:formaction="@{/clubs}"
 							th:text="#{club.cancel}">Cancel</button>
 					</div>
 				</div>
