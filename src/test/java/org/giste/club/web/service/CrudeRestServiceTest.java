@@ -35,6 +35,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Base test class for services accessing REST CRUDE controllers.
  * 
+ * Subclasses hava to implement the following methods:
+ * <ul>
+ * <li>{@link #getRestService(RestTemplate, RestProperties)} to get the service under testing.</li>
+ * <li>{@link #getEmptyDtoArray(int)} to get and empty array of given size of type DTO.</li>
+ * <li>{@link #getErrorForInvalidDto()} to get the <code>RestErrorDto</code> returned when
+ * calling REST server with an invalid DTO.</li>
+ * <li>{@link #getNewDto()} to get a DTO for testing.</li>
+ * <li>{@link #getServiceBasePath()} to get the base path for calls to REST server.</li>
+ * </ul>
+ * 
+ * Subclasses should override the following methods:
+ * <ul>
+ * <li>{@link #checkProperties(NonRemovableDto, NonRemovableDto)} to check that the properties
+ * of a DTO matches the ones of a target DTO.</li>
+ * </ul>
+ * 
  * @author Giste
  *
  * @param <DTO> DTO of the entity controlled by the controller to test.
@@ -219,8 +235,8 @@ public abstract class CrudeRestServiceTest<DTO extends NonRemovableDto> {
 	protected abstract String getServiceBasePath();
 
 	/**
-	 * Gets the service to test. Subclasses has to return a service to test
-	 * created with the RestTemplate and Restproperties passed as parameters.
+	 * Gets the service to test. Subclasses has to return the service to test
+	 * created with the RestTemplate and RestProperties passed as parameters.
 	 * 
 	 * @param restTemplate RestTemplate used by the service to communicate with
 	 *            REST server.
