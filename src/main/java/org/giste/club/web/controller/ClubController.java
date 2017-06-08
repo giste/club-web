@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.giste.club.common.dto.ClubDto;
 import org.giste.club.web.service.ClubRestService;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
+import org.giste.spring.util.controller.CrudeController;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;

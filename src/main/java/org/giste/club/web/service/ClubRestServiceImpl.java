@@ -1,9 +1,10 @@
 package org.giste.club.web.service;
 
 import org.giste.club.common.dto.ClubDto;
-import org.giste.club.web.config.RestProperties;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
+import org.giste.spring.util.config.RestProperties;
 import org.giste.spring.util.error.dto.RestErrorDto;
+import org.giste.spring.util.service.CrudeRestServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

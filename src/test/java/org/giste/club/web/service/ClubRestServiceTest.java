@@ -8,10 +8,11 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 import org.giste.club.common.dto.ClubDto;
-import org.giste.club.web.config.RestProperties;
 import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
+import org.giste.spring.util.config.RestProperties;
 import org.giste.spring.util.error.dto.FieldErrorDto;
 import org.giste.spring.util.error.dto.RestErrorDto;
+import org.giste.spring.util.service.CrudeRestServiceTest;
 import org.junit.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -73,7 +74,7 @@ public class ClubRestServiceTest extends CrudeRestServiceTest<ClubDto> {
 	}
 
 	@Override
-	protected CrudeRestService<ClubDto> getRestService(RestTemplate restTemplate, RestProperties restProperties) {
+	protected ClubRestService getRestService(RestTemplate restTemplate, RestProperties restProperties) {
 		return new ClubRestServiceImpl(restTemplate, restProperties);
 	}
 
