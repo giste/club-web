@@ -20,6 +20,14 @@ public class ClubRestServiceImpl extends CrudeRestServiceImpl<ClubDto> implement
 
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+	/**
+	 * Construct a ClubRestService with a RestTemplate and a RestProperties
+	 * beans.
+	 * 
+	 * @param restTemplate RestTemplate used to communicate with REST server.
+	 * @param restProperties RestProperties with data about REST server (scheme,
+	 *            host, port, path).
+	 */
 	public ClubRestServiceImpl(RestTemplate restTemplate, RestProperties restProperties) {
 		super(restTemplate, restProperties);
 	}

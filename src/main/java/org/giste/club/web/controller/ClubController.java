@@ -22,11 +22,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/clubs")
 public class ClubController extends CrudeController<ClubDto> {
 
+	/**
+	 * Construct the controller with a service used to perform actions on a REST
+	 * server.
+	 * 
+	 * @param clubRestService Service used to communicate with REST server.
+	 */
 	public ClubController(ClubRestService clubRestService) {
 		super(clubRestService);
 	}
 
-	String treatDuplicatedAcronym(ClubDto club, BindingResult result) {
+	private String treatDuplicatedAcronym(ClubDto club, BindingResult result) {
 		// Treat this exception as a validation one.
 		final String[] params = { club.getAcronym() };
 		result.rejectValue("acronym", "Duplicated.club.acronym", params, "Duplicated.club.acronym");

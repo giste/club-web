@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author Giste
  */
 @Component
-@ConfigurationProperties(prefix="rest")
+@ConfigurationProperties(prefix = "rest")
 public class ClubRestProperties extends RestPropertiesImpl {
 
 }

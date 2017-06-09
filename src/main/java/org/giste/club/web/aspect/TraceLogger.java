@@ -9,11 +9,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Aspect for logging at entry and exit points of methods if TRACE level is
+ * enabled.
+ * 
+ * @author Giste
+ */
 @Aspect
 @Component
 public class TraceLogger {
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+	/**
+	 * Logs the entering to a method with all the arguments passed to it.
+	 * 
+	 * @param joinPoint Information about the joint point.
+	 */
 	@Before("execution(* org.giste.club.web..*.*(..))")
 	public void logBefore(JoinPoint joinPoint) {
 
@@ -38,6 +49,12 @@ public class TraceLogger {
 		}
 	}
 
+	/**
+	 * Logs the exit of a method when it returns a value.
+	 * 
+	 * @param joinPoint Information about the joint point.
+	 * @param returnValue The returned value.
+	 */
 	@AfterReturning(pointcut = "execution(!void org.giste.club.web..*.*(..))", returning = "returnValue")
 	public void logReturn(JoinPoint joinPoint, Object returnValue) {
 		if (LOGGER.isTraceEnabled()) {
@@ -46,6 +63,11 @@ public class TraceLogger {
 		}
 	}
 
+	/**
+	 * Logs the exit of a method when it doesn't return a value.
+	 * 
+	 * @param joinPoint Information about the joint point.
+	 */
 	@After("execution(void org.giste.club.web..*.*(..))")
 	public void logExit(JoinPoint joinPoint) {
 		if (LOGGER.isTraceEnabled()) {
