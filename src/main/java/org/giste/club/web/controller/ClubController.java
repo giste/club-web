@@ -73,7 +73,7 @@ public class ClubController extends CrudeController<ClubDto> {
 
 	@Override
 	protected String getBasePath() {
-		return "clubs";
+		return "/clubs";
 	}
 
 }
