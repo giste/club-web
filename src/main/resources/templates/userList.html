@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!--/*/ <th:block th:include="header :: head"></th:block> /*/-->
+
+<title>Clubs</title>
+</head>
+
+<body>
+	<div class="container">
+		<h2 th:text="#{userList.title}">Users</h2>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="col-sm-9" th:text="#{userList.email}">E-mail</th>
+					<th class="col-sm-1" th:text="#{clubList.role}">Role</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="entity : ${entityList}">
+					<td><a href="user.html" th:text="${entity.email}"
+						th:href="@{users/{userId}(userId=${entity.id})}">User 1</a></td>
+					<td th:text="${entity.role}">USER</td>
+				</tr>
+				<!--/*-->
+				<tr>
+					<td><a href="user.html">user1@mail.com</a></td>
+					<td>USER</td>
+				</tr>
+				<tr>
+					<td><a href="user.html">user2@mail.com</a></td>
+					<td>ADMIN</td>
+				</tr>
+				<!--*/-->
+			</tbody>
+		</table>
+		<form th:action="@{/users/new}" action="user.html">
+			<button type="submit" class="btn btn-primary" th:text="#{userList.new}">New User...</button>
+		</form>
+	</div>
+</body>
+
+</html>
