@@ -30,7 +30,7 @@ public class UserRestServiceTest extends CrudRestServiceTest<UserDto> {
 
 	@Override
 	protected UserDto getNewDto() {
-		return new UserDto(1L, "user1@mail.com", "123456", Role.ADMIN);
+		return new UserDto(1L, "user1@mail.com", "user1", "123456", Role.ADMIN);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class UserRestServiceTest extends CrudRestServiceTest<UserDto> {
 
 	@Test
 	public void testCreateDuplicatedMail() throws Exception {
-		final UserDto user = new UserDto(1L, "user1@mail.com", "123456", Role.ADMIN);
+		final UserDto user = new UserDto(1L, "user1@mail.com", "user1", "123456", Role.ADMIN);
 		final RestErrorDto error = new RestErrorDto(HttpStatus.CONFLICT, "1", "Message", "Developer info");
 
 		final UriComponents uri = getUriBuilder().path(getPathBase()).build();
@@ -77,7 +77,7 @@ public class UserRestServiceTest extends CrudRestServiceTest<UserDto> {
 	
 	@Test
 	public void testUpdateDuplicatedMail() throws Exception {
-		final UserDto user = new UserDto(1L, "user1@mail.com", "123456", Role.ADMIN);
+		final UserDto user = new UserDto(1L, "user1@mail.com", "user1", "123456", Role.ADMIN);
 		final RestErrorDto error = new RestErrorDto(HttpStatus.CONFLICT, "1", "Message", "Developer info");
 
 		final UriComponents uri = getUriBuilder().path(getPathId()).buildAndExpand(user.getId());

@@ -47,24 +47,26 @@ public class UserControllerTest extends CrudControllerTest<UserDto> {
 
 	@Override
 	protected UserDto getNewDto() {
-		return new UserDto(1L, "user1@email.com", "123456", Role.USER);
+		return new UserDto(1L, "user1@email.com", "user1", "123456", Role.USER);
 	}
 
 	@Override
 	protected UserDto getInvalidDto(UserDto dto) {
 		dto.setEmail("invalid_mail");
+		dto.setName(null);
 
 		return dto;
 	}
 
 	@Override
 	protected void checkInvalidProperties(ResultActions result) throws Exception {
-		result.andExpect(model().attributeHasFieldErrors("entity", "email"));
+		result.andExpect(model().attributeHasFieldErrors("entity", "email", "name"));
 	}
 
 	@Override
 	protected MockHttpServletRequestBuilder addRequestParams(MockHttpServletRequestBuilder request, UserDto dto) {
 		return request.param("email", dto.getEmail())
+				.param("name", dto.getName())
 				.param("passwordHash", dto.getPasswordHash())
 				.param("role", dto.getRole().toString());
 	}
@@ -74,6 +76,7 @@ public class UserControllerTest extends CrudControllerTest<UserDto> {
 		return super.checkModelList(result, target)
 				.andExpect(model().attribute("entityList", hasItem(allOf(
 						hasProperty("email", is(target.getEmail())),
+						hasProperty("name", is(target.getName())),
 						hasProperty("passwordHash", is(target.getPasswordHash())),
 						hasProperty("role", is(target.getRole()))))));
 	}
@@ -82,6 +85,7 @@ public class UserControllerTest extends CrudControllerTest<UserDto> {
 	protected ResultActions checkModel(ResultActions result, UserDto target) throws Exception {
 		return super.checkModel(result, target)
 				.andExpect(model().attribute("entity", hasProperty("email", is(target.getEmail()))))
+				.andExpect(model().attribute("entity", hasProperty("name", is(target.getName()))))
 				.andExpect(model().attribute("entity", hasProperty("passwordHash", is(target.getPasswordHash()))))
 				.andExpect(model().attribute("entity", hasProperty("role", is(target.getRole()))));
 	}
@@ -90,6 +94,7 @@ public class UserControllerTest extends CrudControllerTest<UserDto> {
 	protected void checkDto(UserDto dto, UserDto target, boolean checkId) {
 		super.checkDto(dto, target, checkId);
 		assertThat(dto.getEmail(), is(target.getEmail()));
+		assertThat(dto.getName(), is(target.getName()));
 		assertThat(dto.getPasswordHash(), is(target.getPasswordHash()));
 		assertThat(dto.getRole(), is(target.getRole()));
 	}
