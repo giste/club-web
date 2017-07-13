@@ -26,7 +26,7 @@
 					<td><a href="user.html" th:text="${entity.email}"
 						th:href="@{users/{userId}(userId=${entity.id})}">user1@email.com</a></td>
 					<td th:text="${entity.name}">User 1</td>
-					<td th:text="${entity.role}">USER</td>
+					<td th:text="${roles.get(entity.role)}">User</td>
 				</tr>
 				<!--/*-->
 				<tr>
