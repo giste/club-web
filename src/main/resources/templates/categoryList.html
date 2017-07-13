@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!--/*/ <th:block th:include="header :: head"></th:block> /*/-->
+
+<title>Categories</title>
+</head>
+
+<body>
+	<div class="container">
+		<h2 th:text="#{categoryList.title}">Categories</h2>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class="col-sm-7" th:text="#{categoryList.name}">Name</th>
+					<th class="col-sm-2" th:text="#{categoryList.minAge}">Min. Age</th>
+					<th class="col-sm-2" th:text="#{categoryList.maxAge}">Max. Age</th>
+					<th class="col-sm-1" th:text="#{categoryList.mixed}">Mixed?</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="entity : ${entityList}">
+					<td><a href="category.html" th:text="${entity.name}"
+						th:href="@{categories/{categoryId}(categoryId=${entity.id})}">Category 1</a></td>
+					<td th:text="${entity.minAge}">15</td>
+					<td th:text="${entity.maxAge}">16</td>
+					<td><input type="checkbox" disabled="disabled"
+						th:checked="${entity.mixed}" checked="checked" /></td>
+				</tr>
+				<!--/*-->
+				<tr>
+					<td><a href="category.html">Category 1</a></td>
+					<td>13</td>
+					<td>14</td>
+					<td><input type="checkbox" disabled="disabled"
+						checked="checked" /></td>
+				</tr>
+				<tr>
+					<td><a href="category.html">Category 2</a></td>
+					<td>15</td>
+					<td>16</td>
+					<td><input type="checkbox" disabled="disabled"
+						checked="checked" /></td>
+				</tr>
+				<!--*/-->
+			</tbody>
+		</table>
+		<form th:action="@{/categories/new}" action="category.html">
+			<button type="submit" class="btn btn-primary" th:text="#{categoryList.new}">New Category...</button>
+		</form>
+	</div>
+</body>
+
+</html>

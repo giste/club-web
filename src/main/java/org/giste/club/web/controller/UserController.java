@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.giste.club.common.dto.Role;
 import org.giste.club.common.dto.UserDto;
-import org.giste.club.web.service.exception.DuplicatedClubAcronymException;
 import org.giste.club.web.service.exception.DuplicatedUserMailException;
 import org.giste.spring.util.controller.CrudController;
 import org.giste.spring.util.locale.LocaleMessage;
@@ -66,7 +65,7 @@ public class UserController extends CrudController<UserDto> {
 			BindingResult result) {
 		try {
 			return super.update(id, user, result);
-		} catch (DuplicatedClubAcronymException e) {
+		} catch (DuplicatedUserMailException e) {
 			return treatDuplicatedEmail(user, result);
 		}
 	}
