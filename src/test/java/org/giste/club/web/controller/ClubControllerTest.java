@@ -98,8 +98,8 @@ public class ClubControllerTest extends CrudeControllerTest<ClubDto> {
 	protected ResultActions checkModelList(ResultActions result, ClubDto target) throws Exception {
 		return super.checkModelList(result, target)
 				.andExpect(model().attribute("entityList", hasItem(allOf(
-				hasProperty("name", is(target.getName())),
-				hasProperty("acronym", is(target.getAcronym()))))));
+						hasProperty("name", is(target.getName())),
+						hasProperty("acronym", is(target.getAcronym()))))));
 	}
 
 	@Override

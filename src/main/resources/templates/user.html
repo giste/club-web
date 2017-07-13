@@ -47,35 +47,33 @@
 							th:field="*{passwordHash}" value="123456" maxlength="25" />
 					</div>
 					<span class="help-block col-sm-offset-2 col-sm-10"
-						th:if="${#fields.hasErrors('passwordHash')}" th:errors="*{passwordHash}">Incorrect
-						password</span>
+						th:if="${#fields.hasErrors('passwordHash')}"
+						th:errors="*{passwordHash}">Incorrect password</span>
 				</div>
-				<div class="form-group"
-					th:classappend="${#fields.hasErrors('role')} or ${error} != null ? has-error">
+				<div class="form-group">
 					<label class="col-sm-2 control-label" for="role"
 						th:text="#{user.role}">Role:</label>
 					<div class="col-sm-2">
-						<input type="text" class="form-control" id="role"
-							th:field="*{role}" value="USER" maxlength="5" />
+						<select class="form-control" th:field="*{role}">
+							<option th:each="role : ${roles}" th:value="${role.getKey()}"
+								th:text="${role.getValue()}">User</option>
+						</select>
 					</div>
-					<span class="help-block col-sm-offset-2 col-sm-10"
-						th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Incorrect
-						acronym</span>
 				</div>
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button th:if="*{id} == 0" type="submit" th:formaction="@{/users}"
-							formmethod="post" formaction="userList.html" class="btn btn-primary"
-							th:text="#{user.create}">Create</button>
+							formmethod="post" formaction="userList.html"
+							class="btn btn-primary" th:text="#{user.create}">Create</button>
 						<button th:if="*{id} > 0" type="submit"
-							th:formaction="@{/users/{userId}(userId=*{id})}" formmethod="post"
-							formaction="userList.html" class="btn btn-primary"
-							th:text="#{user.update}">Update</button>
+							th:formaction="@{/users/{userId}(userId=*{id})}"
+							formmethod="post" formaction="userList.html"
+							class="btn btn-primary" th:text="#{user.update}">Update</button>
 						<button th:if="*{id} > 0" type="submit"
 							th:formaction="@{/users/{id}/delete (id=*{id})}"
-							formmethod="post" formaction="userList.html" class="btn btn-primary"
-							th:text="#{user.delete}">Delete</button>
+							formmethod="post" formaction="userList.html"
+							class="btn btn-primary" th:text="#{user.delete}">Delete</button>
 						<button type="submit" class="btn btn-link" formmethod="get"
 							formaction="userList.html" th:formaction="@{/users}"
 							th:text="#{user.cancel}">Cancel</button>

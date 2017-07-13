@@ -74,7 +74,7 @@ public class UserRestServiceTest extends CrudRestServiceTest<UserDto> {
 
 		getMockServer().verify();
 	}
-	
+
 	@Test
 	public void testUpdateDuplicatedMail() throws Exception {
 		final UserDto user = new UserDto(1L, "user1@mail.com", "user1", "123456", Role.ADMIN);
