@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!--/*/ <th:block th:include="header :: head"></th:block> /*/-->
+
+<title>Category</title>
+</head>
+
+<body>
+	<div class="container">
+		<h2 th:text="#{category.title}">Club</h2>
+		<div>
+			<form class="form-horizontal" th:object="${entity}">
+				<input type="hidden" th:field="*{id}" />
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('name')} ? has-error">
+					<label class="col-sm-2 control-label" for="name"
+						th:text="#{category.name}">Name:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="name"
+							th:field="*{name}" value="Category 1" maxlength="64" />
+					</div>
+					<span class="help-block col-sm-offset-2 col-sm-10"
+						th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect
+						name</span>
+				</div>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('minAge')} or ${error} != null ? has-error">
+					<label class="col-sm-2 control-label" for="minAge"
+						th:text="#{category.minAge}">Min. Age:</label>
+					<div class="col-sm-1">
+						<input type="number" class="form-control" id="minAge"
+							th:field="*{minAge}" value="13" maxlength="2"/>
+					</div>
+					<span class="help-block col-sm-offset-2 col-sm-10"
+						th:if="${#fields.hasErrors('minAge')}" th:errors="*{minAge}">Incorrect
+						age</span>
+				</div>
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('maxAge')} or ${error} != null ? has-error">
+					<label class="col-sm-2 control-label" for="maxAge"
+						th:text="#{category.maxAge}">Max. Age:</label>
+					<div class="col-sm-1">
+						<input type="number" class="form-control" id="maxAge"
+							th:field="*{maxAge}" value="14" maxlength="2" />
+					</div>
+					<span class="help-block col-sm-offset-2 col-sm-10"
+						th:if="${#fields.hasErrors('maxAge')}" th:errors="*{maxAge}">Incorrect
+						age</span>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label> <input type="checkbox" id="mixed"
+								th:text="#{category.mixed}" th:field="*{mixed}">Mixed?</input>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button th:if="*{id} == 0" type="submit" th:formaction="@{/categories}"
+							formmethod="post" formaction="categoryList.html"
+							class="btn btn-primary" th:text="#{category.create}">Create</button>
+						<button th:if="*{id} > 0" type="submit"
+							th:formaction="@{/categories/{categoryId}(categoryId=*{id})}"
+							formmethod="post" formaction="categoryList.html"
+							class="btn btn-primary" th:text="#{category.update}">Update</button>
+						<button th:if="*{id} > 0" type="submit"
+							th:formaction="@{/categories/{id}/delete (id=*{id})}"
+							formmethod="post" formaction="categoryList.html"
+							class="btn btn-primary" th:text="#{category.delete}">Delete</button>
+						<button type="submit" class="btn btn-link" formmethod="get"
+							formaction="categoryList.html" th:formaction="@{/categories}"
+							th:text="#{category.cancel}">Cancel</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>
